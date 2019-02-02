@@ -28,6 +28,8 @@ def xml_to_tree(filename):
             line = data[i]  
             line = replace_space(line)
             line = line.split()
+            line = replace_underscore(line)
+            
         print("Carry over = ", carry_over ,"depth = ", depth, "index = ", index, inline)
         contain_slash = search_slash(data[i])
 
@@ -118,6 +120,28 @@ def replace_space(string):
     if(DEBUG):
         print("new String ---------", new_string)
     return new_string
+
+def replace_underscore(lst):
+    replace = False
+    new_list = []
+    new_string = ""
+    
+    for string in lst:
+        new_string = ""
+        if string[len(string) - 1] == '"':
+            for i in range(len(string)):
+                if string[i] == '_':
+                    new_string += ' '
+                else:
+                    new_string += string[i]
+            replace = True
+            new_list.append(new_string)
+        else:
+            new_list.append(string)
+    print("new list ---------", new_list)
+    return new_list
+            
+    
     
         
 def make_node(arr):
@@ -222,7 +246,7 @@ def treeToJson_Debug(lst, depth , size, flag, s_flag, f):
   
     
 
-DEBUG = 1
+DEBUG = 0
 filename1, filename2 = input().split()
 tree = xml_to_tree(filename1)
 if DEBUG:
@@ -235,11 +259,13 @@ if DEBUG:
     print(tree)
 
 output_stream = open(filename2, 'w')
-#treeToJson(tree, 0 , len(tree), "none", False, output_stream )
-treeToJson_Debug(tree, 0 , len(tree), "none", False, output_stream )
+treeToJson(tree, 0 , len(tree), "none", False, output_stream )
+if DEBUG:
+    treeToJson_Debug(tree, 0 , len(tree), "none", False, output_stream)
+else: 
+    treeToJson(tree, 0 , len(tree), "none", False, output_stream )
 output_stream.write("\n}")
 output_stream.close()
-
 
             
 
